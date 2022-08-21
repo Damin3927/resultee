@@ -56,4 +56,12 @@ describe("Option", () => {
       expect(none.unwrap_or(456)).toBe(456);
     });
   });
+
+  describe(".map", () => {
+    it("works correctly", () => {
+      const fn = (value: number) => value * 2;
+      expect(some.map(fn).unwrap()).toBe(246);
+      expect(none.map(fn)).toEqual(None());
+    });
+  });
 });

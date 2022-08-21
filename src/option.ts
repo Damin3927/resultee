@@ -4,11 +4,10 @@ type SomeType<T> = {
 
 export interface Option<T> {
   is_some: () => this is SomeType<T>;
-  is_none: () => this is this extends SomeType<T>
-    ? never
-    : { readonly value: T };
+  is_none: () => this is this extends SomeType<T> ? never : SomeType<T>;
   unwrap: () => T | never;
   unwrap_or: <U>(defaultValue: U) => T | U;
+  map: <U>(fn: (value: T) => U) => Option<U>;
 }
 
 class _Some<T> implements Option<T> {
@@ -29,6 +28,10 @@ class _Some<T> implements Option<T> {
   unwrap_or<U>(_defaultValue: U): T {
     return this.value;
   }
+
+  map<U>(fn: (value: T) => U) {
+    return new _Some(fn(this.value));
+  }
 }
 
 class _None implements Option<never> {
@@ -48,6 +51,10 @@ class _None implements Option<never> {
 
   unwrap_or<U>(defaultValue: U): U {
     return defaultValue;
+  }
+
+  map<U>(_fn: (value: never) => U) {
+    return new _None();
   }
 }
 
