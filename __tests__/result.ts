@@ -44,4 +44,13 @@ describe("Result", () => {
       expect(() => err.unwrap()).toThrow("unexpected unwrap");
     });
   });
+
+  describe(".map", () => {
+    it("works well", () => {
+      expect(ok.map((value) => String(value)).unwrap()).toBe("123");
+      expect(err.map((value) => String(value))).toEqual(
+        Err(MyError.CustomError)
+      );
+    });
+  });
 });

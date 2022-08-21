@@ -13,6 +13,7 @@ export interface Result<T, E> {
   ok: () => Option<T>;
   err: () => Option<E>;
   unwrap: () => T | never;
+  map: <U>(fn: (value: T) => U) => Result<U, E>;
 }
 
 class _Ok<T> implements Result<T, never> {
@@ -37,6 +38,10 @@ class _Ok<T> implements Result<T, never> {
   unwrap(): T {
     return this.value;
   }
+
+  map<U>(fn: (value: T) => U): Result<U, never> {
+    return Ok(fn(this.value));
+  }
 }
 
 class _Err<E> implements Result<never, E> {
@@ -60,6 +65,10 @@ class _Err<E> implements Result<never, E> {
 
   unwrap(): never {
     throw new Error("unexpected unwrap");
+  }
+
+  map<U>(_fn: (value: never) => U): Result<never, E> {
+    return this;
   }
 }
 
