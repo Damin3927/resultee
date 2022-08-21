@@ -1,8 +1,15 @@
 import { None, Option, Some } from "./option";
 
+type OkType<T> = {
+  readonly value: T;
+};
+type ErrType<E> = {
+  readonly error: E;
+};
+
 export interface Result<T, E> {
-  is_ok: () => this is { value: T };
-  is_err: () => this is { error: E };
+  is_ok: () => this is OkType<T>;
+  is_err: () => this is ErrType<E>;
   ok: () => Option<T>;
   err: () => Option<E>;
 }

@@ -1,26 +1,34 @@
 import { Option, Some, None } from "../src/option";
 
 describe("Option", () => {
-  let option: Option<number>;
+  let some: Option<number>;
+  let none: Option<number>;
 
   beforeEach(() => {
-    option = Some(123);
+    some = Some(123);
+    none = None();
   });
 
-  it("has a correct method is_some()", () => {
-    expect(option.is_some()).toBeTruthy();
+  describe(".is_some", () => {
+    it("works well", () => {
+      expect(some.is_some()).toBeTruthy();
+      expect(none.is_some()).toBeFalsy();
+    });
   });
 
-  it("has a correct method is_none()", () => {
-    expect(option.is_none()).toBeFalsy();
+  describe(".is_none", () => {
+    it("works well", () => {
+      expect(some.is_none()).toBeFalsy();
+      expect(none.is_none()).toBeTruthy();
+    });
   });
 
   it("can be used as return values", () => {
     function returns_some(): Option<number> {
-      return option;
+      return some;
     }
 
-    const some = returns_some();
+    some = returns_some();
     if (some.is_some()) {
       expect(some.value).toBe(123);
     }
@@ -29,19 +37,23 @@ describe("Option", () => {
       return None();
     }
 
-    const none = returns_none();
+    none = returns_none();
     if (none.is_none()) {
       expect(none).not.toHaveProperty("value");
     }
   });
 
   describe(".unwrap", () => {
-    it("has correct behaviours", () => {
-      const some = Some("abc");
-      expect(some.unwrap()).toBe("abc");
-
-      const none: Option<string> = None();
+    it("works well", () => {
+      expect(some.unwrap()).toBe(123);
       expect(() => none.unwrap()).toThrow("unexpected unwrap");
+    });
+  });
+
+  describe(".unwrap_or", () => {
+    it("works correctly", () => {
+      expect(some.unwrap_or(456)).toBe(123);
+      expect(none.unwrap_or(456)).toBe(456);
     });
   });
 });

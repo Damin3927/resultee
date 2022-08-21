@@ -1,7 +1,14 @@
+type SomeType<T> = {
+  readonly value: T;
+};
+
 export interface Option<T> {
-  is_some: () => this is { value: T };
-  is_none: () => this is this extends { value: T } ? never : { value: T };
+  is_some: () => this is SomeType<T>;
+  is_none: () => this is this extends SomeType<T>
+    ? never
+    : { readonly value: T };
   unwrap: () => T | never;
+  unwrap_or: <U>(defaultValue: U) => T | U;
 }
 
 class _Some<T> implements Option<T> {
@@ -16,6 +23,10 @@ class _Some<T> implements Option<T> {
   }
 
   unwrap(): T {
+    return this.value;
+  }
+
+  unwrap_or<U>(_defaultValue: U): T {
     return this.value;
   }
 }
@@ -33,6 +44,10 @@ class _None implements Option<never> {
 
   unwrap(): never {
     throw new Error("unexpected unwrap");
+  }
+
+  unwrap_or<U>(defaultValue: U): U {
+    return defaultValue;
   }
 }
 
