@@ -16,7 +16,7 @@ export interface Result<T, E> {
   map: <U>(fn: (value: T) => U) => Result<U, E>;
 }
 
-class _Ok<T> implements Result<T, never> {
+class _Ok<T, E = never> implements Result<T, E> {
   constructor(public readonly value: T) {}
 
   is_ok() {
@@ -39,12 +39,12 @@ class _Ok<T> implements Result<T, never> {
     return this.value;
   }
 
-  map<U>(fn: (value: T) => U): Result<U, never> {
+  map<U>(fn: (value: T) => U): Result<U, E> {
     return Ok(fn(this.value));
   }
 }
 
-class _Err<E> implements Result<never, E> {
+class _Err<E, T = never> implements Result<T, E> {
   constructor(public readonly error: E) {}
 
   is_ok() {
@@ -67,15 +67,15 @@ class _Err<E> implements Result<never, E> {
     throw new Error("unexpected unwrap");
   }
 
-  map<U>(_fn: (value: never) => U): Result<never, E> {
-    return this;
+  map<U>(_fn: (value: never) => U): Result<U, E> {
+    return this as Result<U, E>;
   }
 }
 
-export const Ok = <T>(value: T): Result<T, never> => {
+export const Ok = <T, E = never>(value: T): Result<T, E> => {
   return new _Ok(value);
 };
 
-export const Err = <E>(error: E): Result<never, E> => {
+export const Err = <E, T = never>(error: E): Result<T, E> => {
   return new _Err(error);
 };
