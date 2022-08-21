@@ -12,6 +12,7 @@ export interface Result<T, E> {
   is_err: () => this is ErrType<E>;
   ok: () => Option<T>;
   err: () => Option<E>;
+  unwrap: () => T | never;
 }
 
 class _Ok<T> implements Result<T, never> {
@@ -32,6 +33,10 @@ class _Ok<T> implements Result<T, never> {
   err() {
     return None();
   }
+
+  unwrap(): T {
+    return this.value;
+  }
 }
 
 class _Err<E> implements Result<never, E> {
@@ -51,6 +56,10 @@ class _Err<E> implements Result<never, E> {
 
   err() {
     return Some(this.error);
+  }
+
+  unwrap(): never {
+    throw new Error("unexpected unwrap");
   }
 }
 
