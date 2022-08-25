@@ -1,13 +1,22 @@
 {
-  "name": "result",
+  "name": "resultee",
   "version": "1.0.0",
+  "description": "Rust-like Result error handling for js",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "node ./dist/index.js",
     "build": "tsc",
     "test": "jest"
   },
+  "keywords": [
+    "result",
+    "rust"
+  ],
+  "author": "Hiroaki Honda <hello@damin.dev> (https://damin.dev)",
+  "bugs": {
+    "url": "https://github.com/Damin3927/resultee/issues"
+  },
+  "homepage": "https://github.com/Damin3927/resultee",
   "devDependencies": {
     "@types/jest": "^28.1.7",
     "eslint": "^8.22.0",
