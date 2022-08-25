@@ -1,0 +1,5 @@
+.git
+.DS_Store
+.github
+__tests__
+node_modules
