@@ -2,7 +2,7 @@
   "name": "resultee",
   "version": "1.0.2",
   "description": "Rust-like Result error handling for js",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "license": "MIT",
   "scripts": {
     "build": "tsc",
@@ -17,6 +17,7 @@
     "url": "https://github.com/Damin3927/resultee/issues"
   },
   "homepage": "https://github.com/Damin3927/resultee",
+  "types": "./dist/index.d.ts",
   "devDependencies": {
     "@types/jest": "^28.1.7",
     "eslint": "^8.22.0",
