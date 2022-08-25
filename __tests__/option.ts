@@ -1,4 +1,4 @@
-import { Option, Some, None } from "../src/option";
+import { Option, Some, None, match } from "../src/option";
 
 describe("Option", () => {
   let some: Option<number>;
@@ -62,6 +62,20 @@ describe("Option", () => {
       const fn = (value: number) => value * 2;
       expect(some.map(fn).unwrap()).toBe(246);
       expect(none.map(fn)).toEqual(None());
+    });
+  });
+
+  describe("match", () => {
+    const pureMatcher = (value: Option<number>) => {
+      return match(value)({
+        Some: (v) => v,
+        None: () => 0,
+      });
+    };
+
+    it("works when matching pure some", () => {
+      expect(pureMatcher(some)).toBe(123);
+      expect(pureMatcher(none)).toBe(0);
     });
   });
 });

@@ -65,3 +65,17 @@ export const Some = <T>(value: T): Option<T> => {
 export const None = (): Option<never> => {
   return new _None();
 };
+
+export function match<T, TReturn>(
+  value: Option<T>
+): (switchCase: { Some: (v: T) => TReturn; None: () => TReturn }) => TReturn {
+  if (value.is_some()) {
+    return (switchCase) => {
+      return switchCase.Some(value.value);
+    };
+  } else {
+    return (switchCase) => {
+      return switchCase.None();
+    };
+  }
+}
