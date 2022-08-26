@@ -95,4 +95,24 @@ describe("Result", () => {
       ).toEqual("0");
     });
   });
+
+  describe(".inspect", () => {
+    it("works well", () => {
+      let tmp: number = 0;
+      ok.inspect((v) => (tmp = v));
+      expect(tmp).toBe(123);
+      err.inspect((_v) => (tmp = 0));
+      expect(tmp).toBe(123);
+    });
+  });
+
+  describe(".inspectErr", () => {
+    it("works well", () => {
+      let tmp: MyError = MyError.AnotherError;
+      ok.inspectErr((e) => (tmp = e));
+      expect(tmp).toBe(MyError.AnotherError);
+      err.inspectErr((e) => (tmp = e));
+      expect(tmp).toBe(MyError.CustomError);
+    });
+  });
 });

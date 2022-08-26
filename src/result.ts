@@ -18,6 +18,8 @@ export interface Result<T, E> {
   map: <U>(fn: (value: T) => U) => Result<U, E>;
   mapOr: <U>(defaultValue: U, fn: (value: T) => U) => U;
   mapOrElse: <U>(defaultFn: (e: E) => U, fn: (v: T) => U) => U;
+  inspect: (fn: (v: T) => void) => this;
+  inspectErr: (fn: (e: E) => void) => this;
 }
 
 class _Ok<T, E = never> implements Result<T, E> {
@@ -62,6 +64,15 @@ class _Ok<T, E = never> implements Result<T, E> {
   mapOrElse<U>(_defaultFn: (e: E) => U, fn: (v: T) => U): U {
     return fn(this.value);
   }
+
+  inspect(fn: (v: T) => void) {
+    fn(this.value);
+    return this;
+  }
+
+  inspectErr(_fn: (v: E) => void) {
+    return this;
+  }
 }
 
 class _Err<E, T = never> implements Result<T, E> {
@@ -105,6 +116,15 @@ class _Err<E, T = never> implements Result<T, E> {
 
   mapOrElse<U>(defaultFn: (e: E) => U, _fn: (v: T) => U): U {
     return defaultFn(this.error);
+  }
+
+  inspect(_fn: (v: T) => void) {
+    return this;
+  }
+
+  inspectErr(fn: (e: E) => void) {
+    fn(this.error);
+    return this;
   }
 }
 
