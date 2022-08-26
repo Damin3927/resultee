@@ -9,14 +9,14 @@ describe("Option", () => {
     none = None();
   });
 
-  describe(".is_some", () => {
+  describe(".isSome", () => {
     it("works well", () => {
       expect(some.isSome()).toBeTruthy();
       expect(none.isSome()).toBeFalsy();
     });
   });
 
-  describe(".is_none", () => {
+  describe(".isNone", () => {
     it("works well", () => {
       expect(some.isNone()).toBeFalsy();
       expect(none.isNone()).toBeTruthy();
@@ -50,7 +50,7 @@ describe("Option", () => {
     });
   });
 
-  describe(".unwrap_or", () => {
+  describe(".unwrapOr", () => {
     it("works correctly", () => {
       expect(some.unwrapOr(456)).toBe(123);
       expect(none.unwrapOr(456)).toBe(456);

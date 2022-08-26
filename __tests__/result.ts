@@ -14,14 +14,14 @@ describe("Result", () => {
     err = Err(MyError.CustomError);
   });
 
-  describe(".is_ok", () => {
+  describe(".isOk", () => {
     it("works well", () => {
       expect(ok.isOk()).toBeTruthy();
       expect(err.isOk()).toBeFalsy();
     });
   });
 
-  describe(".is_ok_and", () => {
+  describe(".isOkAnd", () => {
     it("works well", () => {
       expect(ok.isOkAnd((v) => v >= 100)).toBeTruthy();
       expect(ok.isOkAnd((v) => v >= 200)).toBeFalsy();
@@ -29,14 +29,14 @@ describe("Result", () => {
     });
   });
 
-  describe(".is_err", () => {
+  describe(".isErr", () => {
     it("has a correct method is_err()", () => {
       expect(ok.isErr()).toBeFalsy();
       expect(err.isErr()).toBeTruthy();
     });
   });
 
-  describe(".is_err_and", () => {
+  describe(".isErrAnd", () => {
     it("works well", () => {
       expect(err.isErrAnd((e) => e == MyError.CustomError)).toBeTruthy();
       expect(err.isErrAnd((e) => e == MyError.AnotherError)).toBeFalsy();
@@ -71,14 +71,14 @@ describe("Result", () => {
     });
   });
 
-  describe(".map_or", () => {
+  describe(".mapOr", () => {
     it("works well", () => {
       expect(ok.mapOr("0", (value) => String(value))).toBe("123");
       expect(err.mapOr("0", (value) => String(value))).toEqual("0");
     });
   });
 
-  describe(".map_or_else", () => {
+  describe(".mapOrElse", () => {
     it("works well", () => {
       const k = "0";
       expect(
