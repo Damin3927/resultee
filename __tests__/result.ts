@@ -20,6 +20,14 @@ describe("Result", () => {
     });
   });
 
+  describe(".is_ok_and", () => {
+    it("works well", () => {
+      expect(ok.is_ok_and((v) => v >= 100)).toBeTruthy();
+      expect(ok.is_ok_and((v) => v >= 200)).toBeFalsy();
+      expect(err.is_ok_and((v) => v >= 100)).toBeFalsy()
+    });
+  });
+
   describe(".is_err", () => {
     it("has a correct method is_err()", () => {
       expect(ok.is_err()).toBeFalsy();
