@@ -17,6 +17,7 @@ export interface Result<T, E> {
   unwrap: () => T | never;
   map: <U>(fn: (value: T) => U) => Result<U, E>;
   mapOr: <U>(defaultValue: U, fn: (value: T) => U) => U;
+  mapOrElse: <U>(defaultFn: (e: E) => U, fn: (v: T) => U) => U;
 }
 
 class _Ok<T, E = never> implements Result<T, E> {
@@ -55,6 +56,10 @@ class _Ok<T, E = never> implements Result<T, E> {
   }
 
   mapOr<U>(_defaultValue: U, fn: (value: T) => U): U {
+    return fn(this.value);
+  }
+
+  mapOrElse<U>(_defaultFn: (e: E) => U, fn: (v: T) => U): U {
     return fn(this.value);
   }
 }
@@ -96,6 +101,10 @@ class _Err<E, T = never> implements Result<T, E> {
 
   mapOr<U>(defaultValue: U, _fn: (value: never) => U): U {
     return defaultValue;
+  }
+
+  mapOrElse<U>(defaultFn: (e: E) => U, _fn: (v: T) => U): U {
+    return defaultFn(this.error);
   }
 }
 

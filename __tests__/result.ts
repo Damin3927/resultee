@@ -77,4 +77,22 @@ describe("Result", () => {
       expect(err.mapOr("0", (value) => String(value))).toEqual("0");
     });
   });
+
+  describe(".map_or_else", () => {
+    it("works well", () => {
+      const k = "0";
+      expect(
+        ok.mapOrElse(
+          (_e) => k,
+          (value) => String(value)
+        )
+      ).toBe("123");
+      expect(
+        err.mapOrElse(
+          (_e) => k,
+          (value) => String(value)
+        )
+      ).toEqual("0");
+    });
+  });
 });
