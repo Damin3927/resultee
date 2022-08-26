@@ -16,31 +16,31 @@ describe("Result", () => {
 
   describe(".is_ok", () => {
     it("works well", () => {
-      expect(ok.is_ok()).toBeTruthy();
-      expect(err.is_ok()).toBeFalsy();
+      expect(ok.isOk()).toBeTruthy();
+      expect(err.isOk()).toBeFalsy();
     });
   });
 
   describe(".is_ok_and", () => {
     it("works well", () => {
-      expect(ok.is_ok_and((v) => v >= 100)).toBeTruthy();
-      expect(ok.is_ok_and((v) => v >= 200)).toBeFalsy();
-      expect(err.is_ok_and((v) => v >= 100)).toBeFalsy();
+      expect(ok.isOkAnd((v) => v >= 100)).toBeTruthy();
+      expect(ok.isOkAnd((v) => v >= 200)).toBeFalsy();
+      expect(err.isOkAnd((v) => v >= 100)).toBeFalsy();
     });
   });
 
   describe(".is_err", () => {
     it("has a correct method is_err()", () => {
-      expect(ok.is_err()).toBeFalsy();
-      expect(err.is_err()).toBeTruthy();
+      expect(ok.isErr()).toBeFalsy();
+      expect(err.isErr()).toBeTruthy();
     });
   });
 
   describe(".is_err_and", () => {
     it("works well", () => {
-      expect(err.is_err_and((e) => e == MyError.CustomError)).toBeTruthy();
-      expect(err.is_err_and((e) => e == MyError.AnotherError)).toBeFalsy();
-      expect(ok.is_err_and((e) => e == MyError.CustomError)).toBeFalsy();
+      expect(err.isErrAnd((e) => e == MyError.CustomError)).toBeTruthy();
+      expect(err.isErrAnd((e) => e == MyError.AnotherError)).toBeFalsy();
+      expect(ok.isErrAnd((e) => e == MyError.CustomError)).toBeFalsy();
     });
   });
 
@@ -50,7 +50,7 @@ describe("Result", () => {
     }
 
     const value = tmp();
-    if (value.is_ok()) {
+    if (value.isOk()) {
       expect(value.value).toBe(123);
     }
   });
@@ -73,8 +73,8 @@ describe("Result", () => {
 
   describe(".map_or", () => {
     it("works well", () => {
-      expect(ok.map_or("0", (value) => String(value))).toBe("123");
-      expect(err.map_or("0", (value) => String(value))).toEqual("0");
+      expect(ok.mapOr("0", (value) => String(value))).toBe("123");
+      expect(err.mapOr("0", (value) => String(value))).toEqual("0");
     });
   });
 });

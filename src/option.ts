@@ -3,21 +3,21 @@ type SomeType<T> = {
 };
 
 export interface Option<T> {
-  is_some: () => this is SomeType<T>;
-  is_none: () => this is this extends SomeType<T> ? never : SomeType<T>;
+  isSome: () => this is SomeType<T>;
+  isNone: () => this is this extends SomeType<T> ? never : SomeType<T>;
   unwrap: () => T | never;
-  unwrap_or: <U>(defaultValue: U) => T | U;
+  unwrapOr: <U>(defaultValue: U) => T | U;
   map: <U>(fn: (value: T) => U) => Option<U>;
 }
 
 class _Some<T> implements Option<T> {
   constructor(public readonly value: T) {}
 
-  is_some() {
+  isSome() {
     return true;
   }
 
-  is_none() {
+  isNone() {
     return false;
   }
 
@@ -25,7 +25,7 @@ class _Some<T> implements Option<T> {
     return this.value;
   }
 
-  unwrap_or<U>(_defaultValue: U): T {
+  unwrapOr<U>(_defaultValue: U): T {
     return this.value;
   }
 
@@ -37,11 +37,11 @@ class _Some<T> implements Option<T> {
 class _None implements Option<never> {
   constructor() {}
 
-  is_some() {
+  isSome() {
     return false;
   }
 
-  is_none() {
+  isNone() {
     return true;
   }
 
@@ -49,7 +49,7 @@ class _None implements Option<never> {
     throw new Error("unexpected unwrap");
   }
 
-  unwrap_or<U>(defaultValue: U): U {
+  unwrapOr<U>(defaultValue: U): U {
     return defaultValue;
   }
 
@@ -69,7 +69,7 @@ export const None = (): Option<never> => {
 export function match<T, TReturn>(
   value: Option<T>
 ): (switchCase: { Some: (v: T) => TReturn; None: () => TReturn }) => TReturn {
-  if (value.is_some()) {
+  if (value.isSome()) {
     return (switchCase) => {
       return switchCase.Some(value.value);
     };

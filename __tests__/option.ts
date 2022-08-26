@@ -11,15 +11,15 @@ describe("Option", () => {
 
   describe(".is_some", () => {
     it("works well", () => {
-      expect(some.is_some()).toBeTruthy();
-      expect(none.is_some()).toBeFalsy();
+      expect(some.isSome()).toBeTruthy();
+      expect(none.isSome()).toBeFalsy();
     });
   });
 
   describe(".is_none", () => {
     it("works well", () => {
-      expect(some.is_none()).toBeFalsy();
-      expect(none.is_none()).toBeTruthy();
+      expect(some.isNone()).toBeFalsy();
+      expect(none.isNone()).toBeTruthy();
     });
   });
 
@@ -29,7 +29,7 @@ describe("Option", () => {
     }
 
     some = returns_some();
-    if (some.is_some()) {
+    if (some.isSome()) {
       expect(some.value).toBe(123);
     }
 
@@ -38,7 +38,7 @@ describe("Option", () => {
     }
 
     none = returns_none();
-    if (none.is_none()) {
+    if (none.isNone()) {
       expect(none).not.toHaveProperty("value");
     }
   });
@@ -52,8 +52,8 @@ describe("Option", () => {
 
   describe(".unwrap_or", () => {
     it("works correctly", () => {
-      expect(some.unwrap_or(456)).toBe(123);
-      expect(none.unwrap_or(456)).toBe(456);
+      expect(some.unwrapOr(456)).toBe(123);
+      expect(none.unwrapOr(456)).toBe(456);
     });
   });
 

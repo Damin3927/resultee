@@ -8,33 +8,33 @@ type ErrType<E> = {
 };
 
 export interface Result<T, E> {
-  is_ok: () => this is OkType<T>;
-  is_ok_and: (fn: (v: T) => boolean) => this is OkType<T>;
-  is_err: () => this is ErrType<E>;
-  is_err_and: (fn: (e: E) => boolean) => this is ErrType<E>;
+  isOk: () => this is OkType<T>;
+  isOkAnd: (fn: (v: T) => boolean) => this is OkType<T>;
+  isErr: () => this is ErrType<E>;
+  isErrAnd: (fn: (e: E) => boolean) => this is ErrType<E>;
   ok: () => Option<T>;
   err: () => Option<E>;
   unwrap: () => T | never;
   map: <U>(fn: (value: T) => U) => Result<U, E>;
-  map_or: <U>(defaultValue: U, fn: (value: T) => U) => U;
+  mapOr: <U>(defaultValue: U, fn: (value: T) => U) => U;
 }
 
 class _Ok<T, E = never> implements Result<T, E> {
   constructor(public readonly value: T) {}
 
-  is_ok() {
+  isOk() {
     return true;
   }
 
-  is_ok_and(f: (v: T) => boolean) {
+  isOkAnd(f: (v: T) => boolean) {
     return f(this.value);
   }
 
-  is_err() {
+  isErr() {
     return false;
   }
 
-  is_err_and(_f: (e: E) => boolean) {
+  isErrAnd(_f: (e: E) => boolean) {
     return false;
   }
 
@@ -54,7 +54,7 @@ class _Ok<T, E = never> implements Result<T, E> {
     return Ok(fn(this.value));
   }
 
-  map_or<U>(_defaultValue: U, fn: (value: T) => U): U {
+  mapOr<U>(_defaultValue: U, fn: (value: T) => U): U {
     return fn(this.value);
   }
 }
@@ -62,19 +62,19 @@ class _Ok<T, E = never> implements Result<T, E> {
 class _Err<E, T = never> implements Result<T, E> {
   constructor(public readonly error: E) {}
 
-  is_ok() {
+  isOk() {
     return false;
   }
 
-  is_ok_and(_f: (v: T) => boolean) {
+  isOkAnd(_f: (v: T) => boolean) {
     return false;
   }
 
-  is_err() {
+  isErr() {
     return true;
   }
 
-  is_err_and(f: (e: E) => boolean) {
+  isErrAnd(f: (e: E) => boolean) {
     return f(this.error);
   }
 
@@ -94,7 +94,7 @@ class _Err<E, T = never> implements Result<T, E> {
     return this as unknown as Result<U, E>;
   }
 
-  map_or<U>(defaultValue: U, _fn: (value: never) => U): U {
+  mapOr<U>(defaultValue: U, _fn: (value: never) => U): U {
     return defaultValue;
   }
 }
