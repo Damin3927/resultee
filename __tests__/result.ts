@@ -70,4 +70,11 @@ describe("Result", () => {
       );
     });
   });
+
+  describe(".map_or", () => {
+    it("works well", () => {
+      expect(ok.map_or("0", (value) => String(value))).toBe("123");
+      expect(err.map_or("0", (value) => String(value))).toEqual("0");
+    });
+  });
 });

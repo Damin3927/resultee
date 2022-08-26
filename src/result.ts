@@ -9,13 +9,14 @@ type ErrType<E> = {
 
 export interface Result<T, E> {
   is_ok: () => this is OkType<T>;
-  is_ok_and: (f: (v: T) => boolean) => this is OkType<T>;
+  is_ok_and: (fn: (v: T) => boolean) => this is OkType<T>;
   is_err: () => this is ErrType<E>;
-  is_err_and: (f: (e: E) => boolean) => this is ErrType<E>;
+  is_err_and: (fn: (e: E) => boolean) => this is ErrType<E>;
   ok: () => Option<T>;
   err: () => Option<E>;
   unwrap: () => T | never;
   map: <U>(fn: (value: T) => U) => Result<U, E>;
+  map_or: <U>(defaultValue: U, fn: (value: T) => U) => U;
 }
 
 class _Ok<T, E = never> implements Result<T, E> {
@@ -52,6 +53,10 @@ class _Ok<T, E = never> implements Result<T, E> {
   map<U>(fn: (value: T) => U): Result<U, E> {
     return Ok(fn(this.value));
   }
+
+  map_or<U>(_defaultValue: U, fn: (value: T) => U): U {
+    return fn(this.value);
+  }
 }
 
 class _Err<E, T = never> implements Result<T, E> {
@@ -87,6 +92,10 @@ class _Err<E, T = never> implements Result<T, E> {
 
   map<U>(_fn: (value: never) => U): Result<U, E> {
     return this as unknown as Result<U, E>;
+  }
+
+  map_or<U>(defaultValue: U, _fn: (value: never) => U): U {
+    return defaultValue;
   }
 }
 
