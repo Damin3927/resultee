@@ -9,8 +9,9 @@ type ErrType<E> = {
 
 export interface Result<T, E> {
   is_ok: () => this is OkType<T>;
-  is_ok_and: (f: (v: T) => boolean) => this is OkType<T>
+  is_ok_and: (f: (v: T) => boolean) => this is OkType<T>;
   is_err: () => this is ErrType<E>;
+  is_err_and: (f: (e: E) => boolean) => this is ErrType<E>;
   ok: () => Option<T>;
   err: () => Option<E>;
   unwrap: () => T | never;
@@ -25,10 +26,14 @@ class _Ok<T, E = never> implements Result<T, E> {
   }
 
   is_ok_and(f: (v: T) => boolean) {
-    return f(this.value)
+    return f(this.value);
   }
 
   is_err() {
+    return false;
+  }
+
+  is_err_and(_f: (e: E) => boolean) {
     return false;
   }
 
@@ -57,11 +62,15 @@ class _Err<E, T = never> implements Result<T, E> {
   }
 
   is_ok_and(_f: (v: T) => boolean) {
-    return false
+    return false;
   }
 
   is_err() {
     return true;
+  }
+
+  is_err_and(f: (e: E) => boolean) {
+    return f(this.error);
   }
 
   ok() {

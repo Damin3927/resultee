@@ -2,6 +2,7 @@ import { Err, Ok, Result } from "../src/result";
 
 enum MyError {
   CustomError,
+  AnotherError,
 }
 
 describe("Result", () => {
@@ -24,7 +25,7 @@ describe("Result", () => {
     it("works well", () => {
       expect(ok.is_ok_and((v) => v >= 100)).toBeTruthy();
       expect(ok.is_ok_and((v) => v >= 200)).toBeFalsy();
-      expect(err.is_ok_and((v) => v >= 100)).toBeFalsy()
+      expect(err.is_ok_and((v) => v >= 100)).toBeFalsy();
     });
   });
 
@@ -32,6 +33,14 @@ describe("Result", () => {
     it("has a correct method is_err()", () => {
       expect(ok.is_err()).toBeFalsy();
       expect(err.is_err()).toBeTruthy();
+    });
+  });
+
+  describe(".is_err_and", () => {
+    it("works well", () => {
+      expect(err.is_err_and((e) => e == MyError.CustomError)).toBeTruthy();
+      expect(err.is_err_and((e) => e == MyError.AnotherError)).toBeFalsy();
+      expect(ok.is_err_and((e) => e == MyError.CustomError)).toBeFalsy();
     });
   });
 
